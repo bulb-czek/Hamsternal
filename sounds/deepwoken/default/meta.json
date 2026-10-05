@@ -1,0 +1,7 @@
+{
+  "sounds":
+  {
+    "modJoin": "sounds/deepwoken/default/modJoin.mp3",
+    "modLeave": "sounds/deepwoken/default/modLeave.mp3"
+  }
+}

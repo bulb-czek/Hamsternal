@@ -1,0 +1,11 @@
+{
+  "packs":
+  [
+    {
+      "id": "deepwoken-default",
+      "name": "Deepwoken Default",
+      "category": "Deepwoken",
+      "path": "sounds/deepwoken/default"
+    }
+  ]
+}

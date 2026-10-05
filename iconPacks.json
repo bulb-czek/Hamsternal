@@ -1,0 +1,17 @@
+{
+  "packs":
+  [
+    {
+      "id": "deepwoken-doodle",
+      "name": "Deepwoken Doodle",
+      "category": "Deepwoken",
+      "path": "icons/deepwoken/doodle"
+    },
+    {
+      "id": "deepwoken-alter",
+      "name": "Deepwoken Alter",
+      "category": "Deepwoken",
+      "path": "icons/deepwoken/alter"
+    }
+  ]
+}
