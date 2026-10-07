@@ -6,6 +6,12 @@
       "name": "Deepwoken Default",
       "category": "Deepwoken",
       "path": "sounds/deepwoken/default"
+    },
+    {
+      "id": "deepwoken-indian",
+      "name": "Deepwoken Indian",
+      "category": "Deepwoken",
+      "path": "sounds/deepwoken/indian"
     }
   ]
 }
