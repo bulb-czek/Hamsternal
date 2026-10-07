@@ -4,9 +4,9 @@
   "mineskipper": "mudskipper.png",
   "sharko": "sharko.png",
   "stonespark": "stonespark.png",
-  "turtle": "turtle.png",
+  "turtle": "terrapod.png",
   "bandit": "bandit.png",
-  "golem": "golem.png",
+  "golem": "stonegolem.png",
   "watcher": "watcher.png",
   "legion": "legion.png",
   "brute": "brute.png",
@@ -30,7 +30,7 @@
   "eylis": "eylis.png",
   "ferryman": "ferryman.png",
   "gigamed": "gigamed.png",
-  "squidward": "squidward.png",
+  "squidward": "squibbo.png",
   "celtor": "celtor.png",
   "widow": "widow.png",
   "diver": "diver.png",
@@ -38,5 +38,7 @@
   "bonekeeper": "bonekeeper.png",
   "bounder": "bounder.png",
   "chaser": "chaser.png",
-  "enforcer": "enforcer.png"
+  "enforcer": "enforcer.png",
+  "diverhusk": "diverhusk.png",
+  "ethiron": "ethiron.png"
 }
