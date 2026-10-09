@@ -10,4 +10,4 @@ Build your custom plugin into a DLL using the included `build.bat` script and `H
 ## Build
 
 1. Put `build.bat` in the project root.
-2. Drag and drop your `.cpp` file onto `build.bat`.
+2. Drag and drop your main `.cpp` file onto `build.bat`.
