@@ -24,7 +24,7 @@
 #include <utility>
 
 #define HAMSTERNAL_SDK_VERSION_MAJOR 1
-#define HAMSTERNAL_SDK_VERSION_PATCH 0
+#define HAMSTERNAL_SDK_VERSION_PATCH 1
 
 struct PluginApiVersion
 {
@@ -1726,6 +1726,7 @@ namespace RBLX
         virtual std::vector<std::unique_ptr<IInstance>> GetChildren() = 0;
         virtual std::unique_ptr<IInstance> FindFirstChild(const char* name) = 0;
         virtual std::unique_ptr<IInstance> GetParent() = 0;
+        // Only scripts see changes made via SetParent no visual changes will occur
         virtual bool SetParent(uintptr_t targetAddress) = 0;
         virtual std::unique_ptr<IInstance> FindFirstChildOfClass(const char* className) = 0;
         virtual uintptr_t GetAddress() const = 0;
@@ -1862,70 +1863,44 @@ namespace RBLX
         virtual uint64_t GetUserId() = 0;
 
         virtual size_t GetGuiText(char* buffer, size_t bufferSize) = 0;
+        virtual bool GetGuiVisible() = 0;
 
-        virtual ColorSequence GetParticleColor() = 0;
+        virtual Color3 GetFrameBackgroundColor() = 0;
+        virtual void SetFrameBackgroundColor(Color3 color) = 0;
+        
         // No visual changes will occur if this is called on a particle emitter that is already emitting particles.
         // Visual changes will be applied after the game updates the particle emitter's properties or reparents it.
+        virtual ColorSequence GetParticleColor() = 0;
         virtual void SetParticleColor(ColorSequence color) = 0;
         virtual float GetParticleBrightness() = 0;
-        // No visual changes will occur if this is called on a particle emitter that is already emitting particles.
-        // Visual changes will be applied after the game updates the particle emitter's properties or reparents it.
         virtual void SetParticleBrightness(float brightness) = 0;
         virtual float GetParticleLightEmission() = 0;
-        // No visual changes will occur if this is called on a particle emitter that is already emitting particles.
-        // Visual changes will be applied after the game updates the particle emitter's properties or reparents it.
         virtual void SetParticleLightEmission(float lightEmission) = 0;
         virtual float GetParticleLightInfluence() = 0;
-        // No visual changes will occur if this is called on a particle emitter that is already emitting particles.
-        // Visual changes will be applied after the game updates the particle emitter's properties or reparents it.
         virtual void SetParticleLightInfluence(float lightInfluence) = 0;
         virtual size_t GetParticleTexture(char* buffer, size_t bufferSize) = 0;
-        // No visual changes will occur if this is called on a particle emitter that is already emitting particles.
-        // Visual changes will be applied after the game updates the particle emitter's properties or reparents it.
         virtual void SetParticleTexture(const char* texture) = 0;
         virtual float GetParticleZOffset() = 0;
-        // No visual changes will occur if this is called on a particle emitter that is already emitting particles.
-        // Visual changes will be applied after the game updates the particle emitter's properties or reparents it.
         virtual void SetParticleZOffset(float zOffset) = 0;
         virtual Vector2 GetParticleLifetime() = 0;
-        // No visual changes will occur if this is called on a particle emitter that is already emitting particles.
-        // Visual changes will be applied after the game updates the particle emitter's properties or reparents it.
         virtual void SetParticleLifetime(Vector2 lifetime) = 0;
         virtual float GetParticleRate() = 0;
-        // No visual changes will occur if this is called on a particle emitter that is already emitting particles.
-        // Visual changes will be applied after the game updates the particle emitter's properties or reparents it.
         virtual void SetParticleRate(float rate) = 0;
         virtual float GetParticleRotation() = 0;
-        // No visual changes will occur if this is called on a particle emitter that is already emitting particles.
-        // Visual changes will be applied after the game updates the particle emitter's properties or reparents it.
         virtual void SetParticleRotation(float rotation) = 0;
         virtual float GetParticleRotSpeed() = 0;
-        // No visual changes will occur if this is called on a particle emitter that is already emitting particles.
-        // Visual changes will be applied after the game updates the particle emitter's properties or reparents it.
         virtual void SetParticleRotSpeed(float rotSpeed) = 0;
         virtual float GetParticleSpeed() = 0;
-        // No visual changes will occur if this is called on a particle emitter that is already emitting particles.
-        // Visual changes will be applied after the game updates the particle emitter's properties or reparents it.
         virtual void SetParticleSpeed(float speed) = 0;
         virtual Vector2 GetParticleSpreadAngle() = 0;
-        // No visual changes will occur if this is called on a particle emitter that is already emitting particles.
-        // Visual changes will be applied after the game updates the particle emitter's properties or reparents it.
         virtual void SetParticleSpreadAngle(Vector2 spreadAngle) = 0;
         virtual Vector3 GetParticleAcceleration() = 0;
-        // No visual changes will occur if this is called on a particle emitter that is already emitting particles.
-        // Visual changes will be applied after the game updates the particle emitter's properties or reparents it.
         virtual void SetParticleAcceleration(Vector3 acceleration) = 0;
         virtual float GetParticleDrag() = 0;
-        // No visual changes will occur if this is called on a particle emitter that is already emitting particles.
-        // Visual changes will be applied after the game updates the particle emitter's properties or reparents it.
         virtual void SetParticleDrag(float drag) = 0;
         virtual float GetParticleTimeScale() = 0;
-        // No visual changes will occur if this is called on a particle emitter that is already emitting particles.
-        // Visual changes will be applied after the game updates the particle emitter's properties or reparents it.
         virtual void SetParticleTimeScale(float timeScale) = 0;
         virtual float GetParticleVelocityInheritance() = 0;
-        // No visual changes will occur if this is called on a particle emitter that is already emitting particles.
-        // Visual changes will be applied after the game updates the particle emitter's properties or reparents it.
         virtual void SetParticleVelocityInheritance(float velocityInheritance) = 0;
 
         virtual Vector2 GetAbsolutePosition() = 0;
@@ -2217,6 +2192,17 @@ namespace Wrapper
             if (!m_ptr)
                 return;
             m_ptr->SetBasePartColor(color);
+        }
+        
+        Color3 GetFrameBackgroundColor() const
+        {
+            return m_ptr ? m_ptr->GetFrameBackgroundColor() : Color3();
+        }
+
+        void SetFrameBackgroundColor(Color3 color)
+        {
+            if (m_ptr)
+                m_ptr->SetFrameBackgroundColor(color);
         }
 
         Color3 GetAtmosphereColor()
@@ -2844,6 +2830,11 @@ namespace Wrapper
                     return m_ptr->GetGuiText(buffer, size);
                 })
                 : std::string{};
+        }
+
+        bool GetGuiVisible() const
+        {
+            return m_ptr ? m_ptr->GetGuiVisible() : false;
         }
 
         void SetStringValue(const std::string& value)
