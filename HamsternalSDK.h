@@ -1910,6 +1910,8 @@ namespace RBLX
         virtual size_t GetAnimationId(char* buffer, size_t bufferSize) = 0;
         virtual void SetAnimationId(const char* animationId) = 0;
         virtual bool SetName(const char* newName) = 0;
+        virtual float GetFogEnd() = 0;
+        virtual void SetFogEnd(float fogEnd) = 0;
     };
 }
 
@@ -2275,6 +2277,17 @@ namespace Wrapper
             if (!m_ptr)
                 return;
             m_ptr->SetOffset(offset);
+        }
+
+        float GetFogEnd()
+        {
+            return m_ptr ? m_ptr->GetFogEnd() : 0.0f;
+        }
+
+        void SetFogEnd(float fogEnd)
+        {
+            if (m_ptr)
+                m_ptr->SetFogEnd(fogEnd);
         }
 
         Vector3 GetCameraPosition()
