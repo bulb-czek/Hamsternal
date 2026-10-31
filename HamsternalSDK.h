@@ -24,7 +24,7 @@
 #include <utility>
 
 #define HAMSTERNAL_SDK_VERSION_MAJOR 1
-#define HAMSTERNAL_SDK_VERSION_PATCH 1
+#define HAMSTERNAL_SDK_VERSION_PATCH 2
 
 struct PluginApiVersion
 {
