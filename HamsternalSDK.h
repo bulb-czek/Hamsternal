@@ -24,7 +24,7 @@
 #include <utility>
 
 #define HAMSTERNAL_SDK_VERSION_MAJOR 1
-#define HAMSTERNAL_SDK_VERSION_PATCH 2
+#define HAMSTERNAL_SDK_VERSION_PATCH 4
 
 struct PluginApiVersion
 {
@@ -1180,6 +1180,10 @@ typedef Vector3 (*GetCameraRelativeDirectionFunc)();
 typedef void (*AimCameraAtFunc)(uintptr_t cameraAddress, uintptr_t targetAddress, float smoothSpeed);
 typedef bool (*GetMousePositionFunc)(Vector2& outPosition);
 typedef bool (*GetWindowSizeFunc)(Vector2& outSize);
+typedef bool (*IsFullscreenFunc)();
+typedef void (*ToggleFullscreenFunc)(bool fullscreen);
+typedef bool (*FocusWindowFunc)();
+typedef bool (*IsForegroundFunc)();
 typedef void (*PluginLogFunc)(const char* message);
 typedef void (*PluginNotifyFunc)(const char* message, float messageLifetime);
 typedef bool (*PlayAudioFileFunc)(const std::string& filePath);
@@ -1315,6 +1319,10 @@ struct HamsternalGlobals
     GetJobIdFunc GetJobId;
     GetServerIPFunc GetServerIP;
     GetWindowSizeFunc GetWindowSize;
+    IsFullscreenFunc IsFullscreen;
+    ToggleFullscreenFunc ToggleFullscreen;
+    FocusWindowFunc FocusWindow;
+    IsForegroundFunc IsForeground;
 };
 
 enum class HamsternalError
@@ -1378,6 +1386,7 @@ public:
     {
     }
 
+    // This function may not be called while ui is not visible (out of focus, minimized, etc.)
     virtual void OnVisualUpdate(IDrawingCanvas* canvas)
     {
     }
@@ -1415,6 +1424,27 @@ public:
         if (HG && HG->GetWindowSize)
             HG->GetWindowSize(size);
         return size;
+    }
+
+    bool IsFullscreen() const
+    {
+        return HG && HG->IsFullscreen ? HG->IsFullscreen() : false;
+    }
+
+    void ToggleFullscreen(bool fullscreen) const
+    {
+        if (HG && HG->ToggleFullscreen)
+            HG->ToggleFullscreen(fullscreen);
+    }
+
+    bool FocusWindow() const
+    {
+        return HG && HG->FocusWindow ? HG->FocusWindow() : false;
+    }
+
+    bool IsForeground() const
+    {
+        return HG && HG->IsForeground ? HG->IsForeground() : false;
     }
 
     RBLX::IInstance* GetLocalPlayer() const
